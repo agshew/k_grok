@@ -1,0 +1,50 @@
+# Download Virtualbox
+
+# Download Ubuntu or Centos Virtual Disk Image (VDI)
+
+# Extract 7zipped VDI file, move to desired location
+# if your OS doesn't have a 7zip utility installed, you can download one from 7-zip.org
+# 7za e <archive file>, or on Mac OS X, you could double click on the .7z file if using Keka
+
+# Launch VirtualBox, press New button
+
+# Name: k_grok-<username>, Type: Linux, etc.
+# Use an existing virtual hard disk file, click on folder symbol to the right of the drop-down menu
+
+# Do not power on the VM yet. Otherwise you cannot change Machine Settings
+# [Virtualbox or File]->Preferences, Network, Host-only Networks, right top +
+# Machine->Settings,
+# System, Processors: 2, etc., whatever
+# Network, Adapter 2, Enable, Attached to: Host-only Adapter
+
+# Power on VM
+
+# Log in as root, using password 'osboxes.org'
+
+# Change passwords for root user and osboxes user. You can do this as root with these commands:
+# passwd
+# passwd osboxes
+
+# Boot into multi-user (non-graphical mode) by default
+
+ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 
+
+# If Ubuntu, then:
+# click on Ubuntu button and search for "term" to get the terminal
+# sudo apt-get update
+# apt-get install openssh-server
+
+# If Centos, then:
+# right click on desktop, open terminal
+# edit /etc/sysconfig/network-scripts/ifcfg-enp0s3 to make it look like this:
+# TYPE=Ethernet
+# BOOTPROTO=dhcp
+# DEFROUTE=yes
+# NAME=enp0s3
+# UUID=<USE THE UUID IN YOUR FILE>
+# DEVICE=enp0s3
+# ONBOOT=yes
+# service network restart
+# ifconfig | grep -A2 enp0 | grep 192
+
+# ssh from your host to your VM as user osboxes to the IP address you just grepped

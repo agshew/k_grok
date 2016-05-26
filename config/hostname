@@ -1,0 +1,12 @@
+. ./variables
+
+# become root
+
+# change run-time hostname
+hostname ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}
+
+# make the change persistent
+echo ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}
+
+# and ensure that the name resolves
+perl -pi -e 's/(127.0.0.1\s*localhost)/$1 ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}/' /etc/hosts

@@ -1,0 +1,21 @@
+# From:
+# http://kernelnewbies.org/FirstKernelPatch
+# http://kernelnewbies.org/KernelBuild
+# https://sites.google.com/a/ucsc.edu/open-source-programming intro
+
+. ./variables
+
+cat > ~/.gitconfig <<GITCONFIG
+[user]
+   name = Your Name
+   email = ${EMAIL_USERNAME}@gmail.com 
+
+[sendemail]
+        smtpencryption = tls
+        smtpserver = smtp.gmail.com
+        smtpuser = ${EMAIL_USERNAME}@gmail.com
+        smtpserverport = 587
+        smtpPass = "${EMAIL_PASSWORD}"
+GITCONFIG
+
+chmod 600 ~/.gitconfig

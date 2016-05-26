@@ -1,0 +1,24 @@
+# Based off:
+# http://kernelnewbies.org/FirstKernelPatch
+# http://kernelnewbies.org/KernelBuild
+# https://sites.google.com/a/ucsc.edu/open-source-programming intro
+# https://github.com/iovisor/bcc/blob/master/INSTALL.md
+# http://www.brendangregg.com/perf.html#Building
+
+# If Centos
+
+yum update
+
+yum install gcc make git ctags ncurses-devel openssl-devel mutt git-email gitk \
+  screen gnutls-utils cyrus-sasl \
+  bison cmake ethtool flex git iperf libstdc++-static python-netaddr python-pip gcc gcc-c++ make zlib-devel \
+  elfutils-libelf-devel libdwarf-devel audit-libs-devel
+
+# If Ubuntu
+#
+# sudo apt-get -y install vim libncurses5-dev gcc make \
+# git exuberant-ctags bc libssl-dev \
+# esmtp mutt git-email gitk \
+# bison build-essential cmake flex git libedit-dev \
+# libllvm3.7 llvm-3.7-dev libclang-3.7-dev python zlib1g-dev libelf-dev \
+# gcc make bison flex elfutils libelf-dev libdw-dev libaudit-dev

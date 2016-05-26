@@ -1,0 +1,54 @@
+# From:
+# http://kernelnewbies.org/FirstKernelPatch
+# http://kernelnewbies.org/KernelBuild
+# https://sites.google.com/a/ucsc.edu/open-source-programming intro
+
+# Read the FAQ http://www.tux.org/lkml/
+#
+# Subscribe
+#  mailto:majordomo@vger.kernel.org?subscribe linux-kernel
+#
+# Sending email
+#  https://www.kernel.org/doc/Documentation/email-clients.txt
+#  http://linux.die.net/man/1/git-send-email
+#
+# More info, including other mailing lists at http://vger.kernel.org
+
+
+# In Gmail, go click the gear icon, go to "Settings", go to the tab "Forwarding
+# POP/IMAP", and click the "Configuration instructions" link at the very bottom
+# of the page.
+
+# Then click "I want to set up IMAP". At the bottom of the page, under the
+# paragraph about configuring your mail client, select "Other". Note the
+# outgoing mail server information, and copy it into the configuration files,
+# as shown in the next section.
+
+# If your gmail account uses two-step verification, then create an app password
+# at myaccount.google.com
+# Sign-in & security
+# ...
+
+# Alternatively, under "Sign-in & security" click "Connected apps & sites",
+# then "Allow less secure apps: ON".
+
+. ./variables
+
+# Mutt
+
+cat > ~/.muttrc <<MUTTRC
+set from="Your Name <${EMAIL_USERNAME}@gmail.com>"
+set imap_user = '${EMAIL_USERNAME}@gmail.com'
+set smtp_url = "smtp://${EMAIL_USERNAME}@smtp.gmail.com:587/"
+# if you are using a domain provided by Google
+#set from="Your Name <${EMAIL_USERNAME}@yourdomain>"
+#set imap_user = '${EMAIL_USERNAME}@yourdomain'
+#set smtp_url = "smtps://${EMAIL_USERNAME}@yourdomain@smtp.gmail.com:465/"
+set imap_pass="${EMAIL_PASSWORD}"
+set smtp_pass="${EMAIL_PASSWORD}"
+set spoolfile = imaps://imap.gmail.com:993/INBOX
+
+set folder = "imaps://imap.gmail.com:993"
+MUTTRC
+
+chmod 600 ~/.muttrc

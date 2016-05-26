@@ -1,0 +1,6 @@
+# if Centos
+
+echo export EDITOR=vim >> ~/.bash_profile
+
+# if Ubuntu
+# sudo update-alternatives --set editor /usr/bin/vim.basic
