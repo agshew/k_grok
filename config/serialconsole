@@ -1,0 +1,19 @@
+# VirtualBox
+
+# Power off VM
+# VirtualBox Machine->Settings->Ports
+# Serial Ports
+# Port 1
+
+# Check Enable Serial Port
+# Port Number: COM1
+# Port Mode: Raw File
+# Path/Address: ${PATH_TO_LOG_FILE}
+
+# Linux VM
+
+# find and replace the default Linux kernel boot parameters
+
+sudo perl -pi -e 's/rhgb .*$/console=ttyS0,115200 console=tty0 ignore_loglevel"/' /etc/default/grub
+
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg

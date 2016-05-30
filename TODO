@@ -1,0 +1,3 @@
+- Use Ansible for configuration managment
+- Port to different distributions
+- Record sessings with https://asciinema.org (useful for demo and class homework)

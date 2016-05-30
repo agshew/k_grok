@@ -1,0 +1,35 @@
+cd ~/linux
+
+# update your repo
+git pull
+
+# ensure you have all tags
+git fetch --tags
+
+# archive the latest tag
+KVERS=$(git tag -l | tail | grep -v rc | perl -pe 's/^v//')
+TAG=v${KVERS}
+git archive --format=tar --prefix=linux-${KVERS}/ -o ~/linux-${KVERS}.tar ${TAG}
+
+# build the latest tag
+cd
+tar xf linux-${KVERS}.tar
+cd linux-${KVERS}
+
+# For help on building, see the README or 'make help | less'
+
+# clean the source of old binaries and configurations
+# (should be unnecessary in this case)
+make mrproper
+
+# create a minimal config based on currently loaded modules
+make allmodconfig
+make localmodconfig # and hold down the enter key for all the new options
+
+# compile the kernel in parallel
+make -j$(grep -c "processor" /proc/cpuinfo)
+
+# install the modules into /lib/modules/${KVERS}
+# install the kernel, initramfs, and config into /boot/
+# add an entry to the bootloader
+sudo make modules_install install
