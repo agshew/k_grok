@@ -1,0 +1,1 @@
+mkdir -p ~/.vim/plugin && cd ~/.vim/plugin && wget http://cscope.sourceforge.net/cscope_maps.vim

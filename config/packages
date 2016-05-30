@@ -9,7 +9,7 @@
 
 yum update
 
-yum install gcc make git ctags ncurses-devel openssl-devel mutt git-email gitk \
+yum install gcc make git ctags ncurses-devel openssl-devel mutt git-email gitk cscope \
   screen gnutls-utils cyrus-sasl \
   bison cmake ethtool flex git iperf libstdc++-static python-netaddr python-pip gcc gcc-c++ make zlib-devel \
   elfutils-libelf-devel libdwarf-devel audit-libs-devel
