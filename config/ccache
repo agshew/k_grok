@@ -1,0 +1,19 @@
+# ccache install and setup for Centos
+
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -ivh epel-release-latest-7.noarch.rpm
+sudo yum -y install ccache
+
+export CC="ccache gcc"
+export CXX="ccache g++"
+export CCACHE_SLOPPINESS="include_file_mtime"
+export PATH="/usr/lib64/ccache:$PATH"
+
+cat >> ~/.bash_profile <<PROFILE
+export CC="ccache gcc"
+export CXX="ccache g++"
+export CCACHE_SLOPPINESS="include_file_mtime"
+export PATH="/usr/lib64/ccache:\$PATH"
+PROFILE
+
+ccache -M 2G

@@ -1,0 +1,260 @@
+# enter your linux kernel repo
+cd ~/linux
+
+# update your repo
+git pull
+
+# ensure you have all tags
+git fetch --tags
+
+# archive the latest tag
+KVERS=$(git tag -l | tail | grep -v rc | perl -pe 's/^v//')
+TAG=v${KVERS}
+git archive --format=tar --prefix=linux-${KVERS}/ -o ~/linux-${KVERS}.tar ${TAG}
+
+# archive corresponding perf tools
+make perf-tarxz-src-pkg
+mv perf*.tar.xz ~/
+
+# change directory into the latest snapshot
+cd
+tar xf linux-${KVERS}.tar
+cd linux-${KVERS}
+
+# For help on building, see the README or 'make help | less'
+
+# fully clean the source of old binaries and configurations
+# (should not be unnecessary if you followed the above exactly)
+make mrproper
+
+# create a minimal config based on currently loaded modules
+cp /boot/config-$(uname -r) .config
+make olddefconfig
+make localmodconfig # press enter to accept defaults
+
+perl -pi -e 's/CONFIG_LOCALVERSION=""/CONFIG_LOCALVERSION="-hpc"/' .config;
+
+enable="
+EXPERT \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+make olddefconfig
+
+# disable options unsuitable for HPC resources
+# meanings of configs can be found at http://cateee.net/lkddb/web-lkddb/
+
+disable="
+AGP \
+BT \
+CDROM_PKTCDVD \
+EFI_VARS \
+EFIVAR_FS \
+FB \
+FIREWIRE \
+FUSION \
+HZ_1000 \
+HZ_250 \
+HZ_300 \
+INPUT_EVDEV \
+INPUT_LEDS \
+INPUT_MISC \
+INPUT_MOUSE \
+INPUT_MOUSEDEV \
+INPUT_TABLET \
+INPUT_TOUCHSCREEN \
+ISA_DMA_API \
+ISDN \
+MAC_EMUMOUSEBTN \
+MACINTOSH_DRIVERS \
+MICROCODE_OLD_INTERFACE \
+NET_FC \
+NO_HZ_FULL \
+PARPORT \
+PARTITION_ADVANCED \
+PATA_ACPI \
+PNP \
+RFKILL \
+SERIAL_EARLYCON \
+SERIAL_NONSTANDARD \
+SERIO \
+SOUND \
+TCG_TPM \
+USB_SUPPORT \
+USB_NET_DRIVERS \
+WAN \
+WIRELESS \
+WLAN \
+VGA_ARB \
+VGA_SWITCHEROO \
+X86_16BIT \
+X86_UV \
+ZONE_DMA \
+ZONE_DMA32 \
+"
+for c in $disable; do
+  perl -pi -e "s/CONFIG_$c=.*/CONFIG_$c=n/" .config;
+done
+
+# enable options suitable for HPC resources
+
+enable="
+BONDING \
+DEFERRED_STRUCT_PAGE_INIT \
+EXPERT \
+FSCACHE \
+FUSE_FS \
+HZ_100 \
+NFS_SWAP \
+OVERLAY_FS \
+PROC_CHILDREN \
+X86_X32 \
+ZRAM \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# enable improved debugging support
+enable="
+BPF_SYSCALL \
+DEBUG_INFO_DWARF4 \
+DEBUG_INFO_SPLIT \
+GDB_SCRIPTS \
+IDLE_PAGE_TRACKING \
+SCHEDSTATS \
+STACK_VALIDATION \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# enable to give apps more control over transparent huge pages
+enable="
+TRANSPARENT_HUGEPAGE_MADVISE \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# enable to get new apis for persistent memory
+enable="
+FS_DAX \
+ZONE_DEVICE \
+BLK_DEV_RAM_DAX \
+LIBNVDIMM \
+NVMEM \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# enable if using Lustre parallel file system, but not via
+# externally provided packages
+enable="
+LNET \
+LNET_SELFTEST \
+LUSTRE_FS \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+  make olddefconfig # LNET opens up other options
+done
+
+# enable if infiniband is desired and not using externally
+# provided drivers
+enable="
+INFINIBAND \
+INFINIBAND_USER_MAD \
+INFINIBAND_USER_ACCESS \
+INFINIBAND_IPOIB \
+MLX4_INFINIBAND \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# enable if older EDAC is desired instead of newer
+# firmware-driven GHES and Extended MCA error handling
+# NOTE: disable CONFIG_ACPI_APEI_GHES or use ghes.disable=1
+# boot parameter
+enable="
+EDAC_DECODE_MCE \
+EDAC_MM_EDAC \
+EDAC_AMD64 \
+EDAC_E752X \ 
+EDAC_I82975X \
+EDAC_I3000 \
+EDAC_I3200 \
+EDAC_IE31200 \
+EDAC_X38 \
+EDAC_I5400 \
+EDAC_I7CORE \
+EDAC_I5000 \
+EDAC_I5100 \
+EDAC_I7300 \
+EDAC_SBRIDGE \
+"
+for c in $enable; do
+  perl -pi -e "s/# CONFIG_$c is not set/CONFIG_$c=y/" .config;
+done
+
+# disable EDAC if using newer firmware-driven 
+# GHES and Extended MCA error handling
+disable="
+EDAC_SUPPORT \
+EDAC \
+"
+for c in $disable; do
+  perl -pi -e "s/CONFIG_$c=.*/CONFIG_$c=n/" .config;
+done
+
+# disable if you do not intend to run virtualized guests
+disable="
+VIRTUALIZATION \
+"
+for c in $disable; do
+  perl -pi -e "s/CONFIG_$c=.*/CONFIG_$c=n/" .config;
+done
+
+# disable security features that cost performance
+# with questionable benefit for single-user HPC
+# resources
+disable="
+SECURITY \
+SECURITYFS \
+SECURITY_SELINUX \
+X86_SMAP \
+"
+for c in $disable; do
+  perl -pi -e "s/CONFIG_$c=.*/CONFIG_$c=n/" .config;
+done
+
+disable="
+DECOMPRESS_BZIP2 \
+DECOMPRESS_LZ4 \
+DECOMPRESS_LZMA \
+DECOMPRESS_LZO \
+LZ4_DECOMPRESS \
+LZO_COMPRESS \
+LZO_DECOMPRESS \
+RD_BZIP2 \
+RD_LZ4 \
+RD_LZMA \
+RD_LZO \
+"
+for c in $disable; do
+  perl -pi -e "s/CONFIG_$c=.*/CONFIG_$c=n/" .config;
+done
+
+make olddefconfig
+
+# compile the kernel in parallel
+make -j$(grep -c "processor" /proc/cpuinfo)
+
+# install the modules into /lib/modules/${KVERS}
+# install the kernel, initramfs, and config into /boot/
+# add an entry to the bootloader
+sudo make modules_install install

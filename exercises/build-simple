@@ -11,6 +11,10 @@ KVERS=$(git tag -l | tail | grep -v rc | perl -pe 's/^v//')
 TAG=v${KVERS}
 git archive --format=tar --prefix=linux-${KVERS}/ -o ~/linux-${KVERS}.tar ${TAG}
 
+# archive corresponding perf tools
+make perf-tarxz-src-pkg
+mv perf*.tar.xz ~/
+
 # build the latest tag
 cd
 tar xf linux-${KVERS}.tar
@@ -22,9 +26,10 @@ cd linux-${KVERS}
 # (should be unnecessary in this case)
 make mrproper
 
-# create a minimal config based on currently loaded modules
-make allmodconfig
-make localmodconfig # and hold down the enter key for all the new options
+# create a config based on currently loaded modules
+cp /boot/config-$(uname -r) .config
+make olddefconfig
+make localmodconfig
 
 # compile the kernel in parallel
 make -j$(grep -c "processor" /proc/cpuinfo)
