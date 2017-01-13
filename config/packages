@@ -7,18 +7,52 @@
 
 # If Centos
 
-yum update
+# yum update
 
-yum install gcc make git ctags ncurses-devel openssl-devel mutt git-email gitk cscope \
-  screen gnutls-utils cyrus-sasl \
-  bison cmake ethtool flex git iperf libstdc++-static python-netaddr python-pip gcc gcc-c++ make zlib-devel \
-  elfutils-libelf-devel libdwarf-devel audit-libs-devel
+# yum install gcc make git ctags ncurses-devel openssl-devel mutt git-email gitk cscope \
+#  screen gnutls-utils cyrus-sasl \
+#  bison cmake ethtool flex git iperf libstdc++-static python-netaddr python-pip gcc gcc-c++ make zlib-devel \
+#  elfutils-libelf-devel libdwarf-devel audit-libs-devel
 
 # If Ubuntu
-#
-# sudo apt-get -y install vim libncurses5-dev gcc make \
-# git exuberant-ctags bc libssl-dev \
-# esmtp mutt git-email gitk \
-# bison build-essential cmake flex git libedit-dev \
-# libllvm3.7 llvm-3.7-dev libclang-3.7-dev python zlib1g-dev libelf-dev \
-# gcc make bison flex elfutils libelf-dev libdw-dev libaudit-dev
+
+# grep -v '#' installpackages | xargs apt -y install
+bc
+bison
+build-essential
+cmake
+docker.io
+elfutils
+esmtp
+exuberant-ctags
+flex
+gcc
+git
+git-email
+gitk
+lftp
+libaudit-dev
+libclang-3.7-dev
+libdw-dev
+libedit-dev
+libelf-dev
+libllvm3.7
+libncurses5-dev
+libssl-dev
+libtool
+linux-tools-common
+linux-tools-generic
+llvm-3.7-dev
+make
+make
+mutt
+python
+r-cran-dichromat
+r-cran-ggplot2
+r-recommended
+rsync
+screen
+ssh
+tmux
+vim
+zlib1g-dev

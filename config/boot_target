@@ -1,0 +1,3 @@
+# Boot into multi-user (non-graphical mode) by default
+
+ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 

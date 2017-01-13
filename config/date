@@ -3,11 +3,11 @@
 # become root
 
 # we need the time to be correct on emails, so fix that
-timedatectl set-timezone America/Denver
+timedatectl set-timezone $TIMEZONE
 
 # for Ubuntu
 # apt-get -y install ntpdate
 
 # for Centos
-ntpdate -s 0.centos.pool.ntp.org
-systemctl enable ntpdate
+# ntpdate -s 0.centos.pool.ntp.org
+# systemctl enable ntpdate
