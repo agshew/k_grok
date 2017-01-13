@@ -6,3 +6,6 @@ set softtabstop=8
 set shiftwidth=8
 set noexpandtab
 VIMRC
+
+# On Ubuntu
+sudo update-alternatives --set editor /usr/bin/vim.basic
