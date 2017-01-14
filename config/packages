@@ -16,10 +16,18 @@
 
 # If Ubuntu
 
+# for newer asciinema
+# apt-add-repository ppa:zanchey/asciinema
+
 # for bcc-tools
 # echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main" | sudo tee /etc/apt/sources.list.d/iovisor.list
 
+# for git-lfs
+# https://github.com/git-lfs/git-lfs
+# curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+
 # grep -v '#' installpackages | xargs apt -y install
+asciinema
 bc
 bcc-tools
 binutils-dev
@@ -39,6 +47,8 @@ gcc
 git
 git-email
 gitk
+git-lfs
+global
 isolinux
 lftp
 libaudit-dev
@@ -56,6 +66,7 @@ libslang2-dev
 libssl-dev
 libtool
 libunwind-dev
+linkchecker
 linux-tools-common
 linux-tools-generic
 llvm-3.7-dev
@@ -72,6 +83,7 @@ r-cran-ggplot2
 r-recommended
 rsync
 screen
+seascope
 sparse
 ssh
 systemtap-sdt-dev

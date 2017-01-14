@@ -1,0 +1,11 @@
+# https://github.com/git-series/git-series
+#
+# git series tracks changes to a patch series over time. git series also tracks
+# a cover letter for the patch series, formats the series for email, and
+# prepares pull requests.
+#
+# https://linuxplumbersconf.org/2016/ocw//system/presentations/4305/original/git-discussion.pdf
+
+RUSTUP_HOME=/usr/local/rust CARGO_HOME=/usr/local/cargo bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+export PATH="/usr/local/cargo/bin:$PATH"
+cargo install --root /usr/local git-series
