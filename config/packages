@@ -16,11 +16,17 @@
 
 # If Ubuntu
 
+# for bcc-tools
+# echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+
 # grep -v '#' installpackages | xargs apt -y install
 bc
+bcc-tools
+binutils-dev
 bison
 build-essential
 cmake
+cscope
 docker.io
 elfutils
 esmtp
@@ -36,10 +42,16 @@ libclang-3.7-dev
 libdw-dev
 libedit-dev
 libelf-dev
+libgtk2.0-dev
+libiberty-dev
 libllvm3.7
 libncurses5-dev
+libnuma-dev
+libperl-dev
+libslang2-dev
 libssl-dev
 libtool
+libunwind-dev
 linux-tools-common
 linux-tools-generic
 llvm-3.7-dev
@@ -47,12 +59,14 @@ make
 make
 mutt
 python
+python-dev
 r-cran-dichromat
 r-cran-ggplot2
 r-recommended
 rsync
 screen
 ssh
+systemtap-sdt-dev
 tmux
 vim
 zlib1g-dev
