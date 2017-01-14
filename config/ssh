@@ -1,0 +1,11 @@
+# SSH port reuse to the same host
+
+# If you find yourself typing your password in a lot to log in remotely or copy
+# files, you can set up keys, or set yourself up to reuse ports.
+
+mkdir -p ~/.ssh/connections
+
+cat >> ~/.ssh/config <<SSHCONFIG
+ControlMaster auto
+ControlPath ~/.ssh/connections/%h_%p_%r
+SSHCONFIG

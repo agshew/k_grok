@@ -1,0 +1,30 @@
+# some info copied from https://courses.cs.washington.edu/courses/cse451/10au/tutorials/tutorial_ctags.html
+
+cd $LINUX_SOURCE
+make tags
+
+vim -t mm_struct	# open the file containing the definition of mm_struct
+
+vim mm/mmap.c
+/struct
+w
+
+[I			# display all lines matching cursor keyword
+
+<CTRL>]			# jump to first declaration matching cursor keyword
+
+<CTRL>T			# jump back the stack
+
+<CTRL>W <CTRL>]		# split window, declaration matching cursor keyword
+
+g <CTRL>]		# select decl. from list, jump, based on cursor keyword
+
+<CTRL>W g <CTRL>]	# select decl. from list, split window, cursor keyword
+
+:ts <tag> <RET>		# Search for a particular tag
+
+:tn			# Go to the next definition for the last tag
+
+:tp			# Go to the previous definition for the last tag
+
+:ts			# List all of the definitions of the last tag

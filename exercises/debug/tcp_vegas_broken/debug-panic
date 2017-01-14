@@ -1,0 +1,29 @@
+Modify TCP Vegas to not initialize a structure.
+
+Why? People do a lot of things in Vegas that aren't the best idea. Like eat
+deep fried Oreos. Seriously, we're going to debug a kernel panic.
+
+WARNING: Only do this if you are willing to crash your system!
+
+Trigger the panic by building and loading the module, setting
+congestion control to vegas, and initiating a new TCP connection.
+
+make
+sudo insmod ./tcp_vegas.ko
+sudo sysctl net.ipv4.tcp_congestion_control=vegas
+ssh localhost
+
+The system will crash now.
+
+To debug, copy function and offset from the console log:
+
+BUG: unable to handle kernel NULL pointer dereference at 000000000000000c
+IP: [<ffffffffc0194097>] tcp_vegas_state+0x17/0x50 [tcp_vegas]
+
+Restart your system, log in, and come back to this directory.
+
+cd tcp_vegas_broken
+gdb tcp_vegas.o
+	list *(tcp_vegas_state+0x17)
+
+The line (in context) that dereferenced the NULL pointer will be printed

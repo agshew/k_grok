@@ -1,0 +1,22 @@
+http://kernelnewbies.org/FAQ/CodeBrowsing
+http://cscope.sourceforge.net/cscope_vim_tutorial.html
+http://cscope.sourceforge.net/large_projects.html
+
+mkdir -p .vim/plugin && cd .vim/plugin && wget http://cscope.sourceforge.net/cscope_maps.vim
+cd $LINUX_SOURCE
+make cscope
+cscope -d
+
+# once in vim, you have new bindings '\' for cscope ']' for ctags
+
+:scscope find global X		# select definition from list matching X, split window
+
+:scscope find symbol X		# select symbol from list matching X, split window
+
+<CTRL>\s			# select from list matching cursor keyword
+
+<CTRL>T				# jump back
+
+<CTRL><SPACE>s			# select decl. from list, split window, cursor keyword
+
+<CTRL><SPACE2>s			# select decl. from list, vertical split, cursor keyword

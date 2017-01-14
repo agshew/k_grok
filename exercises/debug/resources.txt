@@ -1,0 +1,20 @@
+GDB
+===
+
+https://kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html
+
+Printing
+========
+
+The perils of printk(). 2016
+https://lwn.net/Articles/705938/
+
+The perils of pr_info(). 2012
+https://lwn.net/Articles/487437/
+
+https://kernel.org/doc/html/latest/admin-guide/dynamic-debug-howto.html
+
+https://www.kernel.org/doc/Documentation/printk-formats.txt
+
+http://elinux.org/Debugging_by_printing
+

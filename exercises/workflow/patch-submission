@@ -1,0 +1,226 @@
+Open Source Programming
+
+Linux Patch Submission
+Andrew Shewmaker and Carlos Maltzahn
+
+2017
+
+This course material is under the Creative Commons Attribution 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/
+
+"Submitting a Linux kernel patch is like publishing a paper"
+- Andi Kleen in On submitting kernel patches
+http://halobates.de/on-submitting-patches.pdf
+
+ - convince a skeptical audience
+ - creating good titles and abstracts are critical
+ - cite related work
+ - read good examples to improve your writing
+
+Posting patches overview
+https://kernel.org/doc/html/latest/process/5.Posting.html
+
+ - take time with simple patches
+ - post complex patches early
+ - solve one problem per patch
+ - put in extra effort before posting
+ - don't attempt to save time by being sloppy
+
+Fundamentals of a Linux submission
+
+ - base work off of a well-known version
+ - create plain text emails without attachments
+ - create small patches (< 300 KB)
+ - create small patch series (< 15)
+ - read coding style and use scripts/checkpatch.pl
+   https://kernel.org/doc/html/latest/process/coding-style.html
+ - expedite acceptance by following the submission checklist
+   https://kernel.org/doc/html/latest/process/submit-checklist.html
+
+Basic patch template
+
+See patch formatting and submitting patches for more details
+https://kernel.org/doc/html/latest/process/5.Posting.html#patch-formatting-and-changelogs
+https://kernel.org/doc/html/latest/process/submitting-patches.html
+
+Subject: [PATCH <tag>] <subsystem> <summary>
+CC: <recipients>
+
+<origination_info>
+
+<changelog>
+
+<developer_tags>
+---
+<patch_history>
+
+<diffstat>
+
+<one_logical_and_buildable_patch>
+
+
+Subject: [PATCH <tag>] <subsystem> <summary>
+
+PATCH - distinguishes patches from other e-mail discussions
+tag - how the patch should be treated
+	RFC, version, zero-padded sequence number
+	e.g. [PATCH  v2 01/27]
+subsystem - area affected (technically optional, but highly recommended)
+	subdir gives hint, but don't use subdir
+	if unsure, then see scripts/get_maintainer.pl
+summary - globally-unique description of changes and motivation in 70-75 characters
+	e.g. ext2: improve scalability of bitmap searching
+
+
+CC: <recipients>
+
+recipients - anybody who might be interested in it
+MAINTAINERS
+	scripts/get_maintainer.pl
+	maintainer of last resort: Andrew Morton (akpm@linux-foundation.org)
+developers working in the same area
+original poster of bug report or feature request
+relevant mailing list, or, if nothing else applies, the linux-kernel list
+if bug fix, then consider stable@vger.kernel.org
+	and add a “Cc: stable@vger.kernel.org” to <developer_tags>
+
+
+<origination_info>
+
+From: Original Author <author@example.com>
+[backport of <kernel_version> commit <id>]
+
+This does not apply for original work, of course. If excluded then the email header is used.
+If you were not the original author of the patch, then tag them here.
+Also, backport information is helpful.
+
+
+<changelog>
+
+Self-contained, sufficiently verbose description of the patch
+
+Motivation
+	describe problems and symptoms observed
+	include log messages useful for searching for a solution
+Overall design approach
+	describe possible means of addressing the problem and why this means is best
+Implementation details
+	use imperative mood, e.g. “make xyzzy do frotz” instead of “[This patch] makes xyzzy do frotz”
+	describe how this patch relates to previous commits or other patches in a series
+	use the ‘Fixes:’ tag with the first 12 characters of the SHA-1 ID, and the one line summary 
+Testing results
+	quantify improvements and setbacks
+
+Err on the side of verbosity. Don't waste other people's time. Put relevant
+information in one place. Summarize previous discussion.
+
+<developer_tags>
+
+Signed-off-by: <full_name> <email>
+	an agreement to the Developer’s Certificate of Origin
+	code without a proper signoff cannot be merged
+Acked-by: <full_name> <email>
+	named developer agrees that the patch is appropriate for inclusion
+Tested-by: <full_name> <email>
+	named person has tested the patch and found it to work
+Reviewed-by: <full_name> <email>
+	named developer offers reviewer's statement of oversight
+Reported-by: <full_name> <email>
+	named user who reported a problem which is fixed by this patch
+Cc: <full_name> <email>
+	the named person received a copy of the patch and had the opportunity to comment on it
+
+
+<patch_history>
+
+Describe how you addressed reviewer feedback
+Use imperative language
+
+Example:
+
+v3:
+ - limit resource_counter to maximum of Z 
+v2:
+ - use X units for resource_counter instead of Y
+ - document resource_counter variable
+
+A patch history provides context to reviewers, but is not part of the record.
+
+<diffstat>
+rely on git
+	or use diffstat options -p 1 -w 70
+
+<one_logical_and_buildable_patch>
+
+A change should be easily understood, justifiable, and verifiable.
+
+separate bug fixes
+separate performance optimizations
+separate API update and new use of it
+group single changes made to multiple files
+note dependencies
+make series bisectable
+
+Posting patches - followthrough
+https://kernel.org/doc/html/latest/process/6.Followthrough.html
+
+address reviewer feedback with:
+	code
+	comment
+	never ignore!
+save reviewers time
+	be responsive
+	provide all necessary context
+	agree with feedback unless you are absolutely convinced it is critical to things differently
+
+
+Assignment grading
+
+A patch submission assignment will be graded on how well it follows the
+following template and the guidelines in kernel documentation.
+
+Subject: [PATCH <tag>] <subsystem> <summary>
+CC: <recipients>
+
+<origination_info>
+
+<changelog>
+
+<developer_tags>
+---
+<patch_history>
+
+<diffstat>
+
+<one_logical_and_buildable_patch>
+
+10 points maximum
+
+-2pt per missing <item>
+-1pt per unsatisfied guideline
+
+If submission arrives >2 days before due, then you will receive feedback by 1 day before due.
+
+A resubmission that fixes problems earns lost points if and only if <tag> and <patch_history> are updated.
+
+Each assignment may be resubmitted once before and once after assignment is due.
+
+Late (re)submissions earn a maximum of 7 out of 10 points.
+
+
+Examples of good looking patch submissions:
+
+[PATCH v2 00/20] Create a book for Kernel development
+https://lkml.org/lkml/2016/9/12/1206
+
+
+[PATCH v5 0/9] mm/swap: Regular page swap optimizations
+https://lkml.org/lkml/2017/1/11/826
+
+
+[PATCH v7] x86: fix kaslr and memmap collision
+https://lkml.org/lkml/2017/1/11/836
+
+
+[PATCH v3 net-next 0/4] Introduce The SipHash PRF
+https://lkml.org/lkml/2017/1/8/75

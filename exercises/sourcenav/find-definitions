@@ -1,0 +1,14 @@
+Using ctags, cscope, global, the lxr website, or any other method. Find a the
+definitions (look for a statement with curly braces) of the following
+structures that will be used on the x86 architecture. Empty declarations like
+'struct mm_struct;' are not what I'm looking for.
+
+Memory management structure: mm_struct
+Task (as in processes scheduled on processors) structure: task_struct
+Block device structure: block_device
+General BSD socket structure: socket
+
+For example:
+mm_struct	include/memory/jedec_ddr.h
+
+Note well, the example is wrong.

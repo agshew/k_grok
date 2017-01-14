@@ -1,0 +1,8 @@
+https://www.gnu.org/software/global/globaldoc_toc.html#Basic-usage
+
+cd $LINUX_SOURCE
+make gtags
+
+global mm_struct	# list files containing definition of mm_struct
+
+global mm_struct -x	# show file and line of definition of mm_struct
