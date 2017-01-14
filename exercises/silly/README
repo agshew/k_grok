@@ -1,0 +1,73 @@
+Based on example from:
+
+Using the TRACE_EVENT() macro (Part 3)
+http://lwn.net/Articles/383362/
+
+My version measures the time it takes to increment
+the counter and print hello world.
+
+As root:
+
+insmod sillymod-event.ko
+
+cd /sys/kernel/debug/tracing
+
+echo 1 > events/silly/me_silly/enable
+
+
+To add a load during the test, you
+can do something like:
+
+perf bench sched messaging -l 10000
+
+cat trace
+
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 377/377   #P:2
+#
+#                              _-----=> irqs-off
+#                             / _----=> need-resched
+#                            | / _---=> hardirq/softirq
+#                            || / _--=> preempt-depth
+#                            ||| /     delay
+#           TASK-PID   CPU#  ||||    TIMESTAMP  FUNCTION
+#              | |       |   ||||       |         |
+...
+    silly-thread-20261 [000] .... 320756.099657: me_silly: 91, 11
+    silly-thread-20261 [000] .N.. 320757.135329: me_silly: 92, 9
+    silly-thread-20261 [000] .N.. 320758.189750: me_silly: 93, 14
+    silly-thread-20261 [000] .... 320759.250342: me_silly: 94, 15
+    silly-thread-20261 [000] .... 320760.300014: me_silly: 95, 12
+    silly-thread-20261 [000] .... 320761.359252: me_silly: 96, 15
+    silly-thread-20261 [000] .... 320762.406579: me_silly: 97, 12
+    silly-thread-20261 [000] .... 320763.456902: me_silly: 98, 12
+    silly-thread-20261 [000] .... 320764.493467: me_silly: 99, 10
+...
+
+
+perl -ne '/me_silly: (\d+), (\d+)/ && print "$1, $2\n"' trace >> /tmp/silly-before.dat
+
+apt-get install r-base r-cran-ggplot2 imagemagick
+
+./silly-plots.R silly-before.dat
+
+display *png
+
+After modifying the code, removing the module, and tracing again, you can plot
+both on the same graph.
+
+./silly-plots.R silly-before.dat silly-after.dat
+
+
+How to interpret CDFs and PDFs
+
+With latencies, smaller is better, and less variation is better. So, a better
+CDF should be more to the left and more vertical. Likewise, a better PDF will
+be more to the left, have a higher peak, and be less spread out.
+
+If you are having difficulty visually comparing CDFs and PDFs, try switching
+the scale. If the difference between the min and max is large, then try a
+logarithmic scale. Otherwise, the regular scale is probably better. You can
+also try zooming in on a region of the graph that is particularly interesting
+by changing the minimum and maximum values on that axis.
