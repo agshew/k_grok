@@ -1,0 +1,13 @@
+SRC_DIR=/usr/src
+cd SRC_DIR
+mkdir linux
+cd linux
+git init
+
+git remote add upstream git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+git remote add stable git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+git remote add docs-next git://git.lwn.net/linux.git
+
+git fetch upstream
+git fetch stable
+git fetch docs-next
