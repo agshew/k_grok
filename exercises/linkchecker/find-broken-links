@@ -1,0 +1,70 @@
+#!/usr/bin/bash
+
+# Fix a broken hyperlink
+#
+# A broken hyperlink in a project such as Linux is like a pot shard dug up in
+# an old city. They point to a span of history that is perhaps recent, or it
+# could be shrouded in mystery in an all but forgotten past. It takes an
+# archaeologist or historian to tell the difference.
+# 
+# You need to become a bit of a Linux archaeologist. Ask yourself these
+# questions: When was it broken? What was the latest update to the broken link's
+# content? The Way Back machine or LWN can often help answer those questions.
+# 
+# What was the link used for in Linux? Look at the surrounding text in the file,
+# other files in the directory, the mailing list archive, git history, etc.
+# 
+# How was the link broken? Is it temporary? Did the site just move, or was it
+# obsoleted/abandoned? Did it only apply to older kernels? Is there a modern way
+# of dealing with the same topic that the broken link was concerned with? You
+# might find clues under linux/Documentation/ABI, or by searching for the word
+# deprecate (grep -ir deprecat linux/Documentation/).
+# 
+# Use a program like linkchecker (https://wummel.github.io/linkchecker) to find a
+# broken link in the kernel source, and post the link to the classroom in order
+# to claim it. If someone else claimed it first, then find another. Then email a
+# patch in a format that would be acceptable to the Linux kernel mailing list
+# that fixes the broken link to the instructors.
+#
+# The patch should be separate from the first two parts of this assignment. And
+# remember to read the documentation on submitting patches.
+# 
+# Bigger project idea ... should there be a make target or script like
+# script/check*?
+# 
+# When you find a broken link I would ask a few questions:
+# 
+# What information was the kernel trying to point to? (Look at the context of
+# where that link occurs in the kernel source) Can you find that information
+# somewhere else?  Why might it have been moved?  Where might it have been moved?
+# 
+# These are the sorts of things you'd want to talk about in your patch,
+# justifying your choice of fix.
+
+KERNEL_SOURCE=/usr/src/linux-$(uname -r)
+cd ${KERNEL_SOURCE}
+grep -Er  "ftp:/|http:/|gopher:/" . > /tmp/potential-links.txt
+
+# extract links and print them as html urls
+# regex is from urlview man page
+perl -ne 'm{((((http|https|ftp|gopher)|mailto):(//)?[^ <>"\t]*|(www|ftp)[0-9]?\.[-a-z0-9.]+)[^ .,;\t\n\r<">\):]?[^, <>"\t]*[^ .,;\t\n\r<">\):])} \
+	&& print "<a href=\"$1\">another link</a>\n"' \
+	/tmp/potential-links.txt \
+	| sort \
+	| uniq \
+	> /tmp/links.html
+
+grep --color='auto' -P '[^\x00-\x7F]' /tmp/links.html > /tmp/links-nonascii.html
+
+grep --color='auto' -vP '[^\x00-\x7F]' /tmp/links.html > /tmp/links-ascii.html
+
+echo
+echo high level link summary
+wc -l /tmp/*html /tmp/*txt
+
+# https://wummel.github.io/linkchecker/
+linkchecker -r1 -v --check-extern /tmp/links-ascii.html > /tmp/linkcheck-ascii.txt
+
+echo
+echo link status summary
+grep Result /tmp/linkcheck-ascii.txt | sort | uniq -c

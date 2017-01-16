@@ -88,5 +88,6 @@ sparse
 ssh
 systemtap-sdt-dev
 tmux
+urlview
 vim
 zlib1g-dev

@@ -1,0 +1,57 @@
+# Performance Analysis
+# 
+# Profilers vs. Tracers
+# http://danluu.com/perf-tracing/
+# 
+# Scientific Benchmarking
+# http://spcl.inf.ethz.ch/Research/Performance/LibLSB/
+# 
+# Brendan Gregg's Perf page
+# http://www.brendangregg.com/perf.html
+# 
+# In particular, start with http://www.brendangregg.com/perf.html#Prerequisites
+# and http://www.brendangregg.com/perf.html#Building
+# 
+# 
+# Let's build our own perf!
+# 
+# 
+# On Ubuntu you should have at least the following packages:
+# gcc make bison flex elfutils libelf-dev libdw-dev libaudit-dev
+#
+# and, for extra functionality
+# python-dev binutils-dev libgtk2.0-dev liblzma-dev libnuma-dev libperl-dev 
+
+KVERS=$(uname -r)
+cd /usr/src/linux-$KVERS
+make perf-tar-src-pkg
+
+mv perf-${KVERS}.tar ../
+cd ..
+tar xf perf-${KVERS}.tar
+cd perf-${KVERS}/tools/perf
+make
+echo "examine the output of make to find new dependencies"
+
+# See also
+# https://github.com/brendangregg/perf-tools
+# https://github.com/brendangregg/FlameGraph
+# https://github.com/brendangregg/HeatMap
+# https://github.com/iovisor/bcc
+
+# Andi Kleen's pmu tools https://github.com/andikleen/pmu-tools look interesting
+
+# Trace Event Example of a Timing Harness
+# k_grok/exercises/tracepoint-silly/
+
+# How to interpret CDFs and PDFs
+#
+# With latencies, smaller is better, and less variation is better. So, a better
+# CDF should be more to the left and more vertical. Likewise, a better PDF will
+# be more to the left, have a higher peak, and be less spread out.
+#
+# If you are having difficulty visually comparing CDFs and PDFs, try switching
+# the scale. If the difference between the min and max is large, then try a
+# logarithmic scale. Otherwise, the regular scale is probably better. You can
+# also try zooming in on a region of the graph that is particularly interesting
+# by changing the minimum and maximum values on that axis.
