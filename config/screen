@@ -27,7 +27,7 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 defbce on
 
 # mouse tracking allows to switch region focus by clicking
-mousetrack on
+# mousetrack on
 
 # default windows
 screen -t Home          1 bash
