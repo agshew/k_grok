@@ -1,10 +1,20 @@
 # Download Virtualbox
+# https://www.virtualbox.org/wiki/Downloads
 
 # Download Ubuntu or Centos Virtual Disk Image (VDI)
+
+# osboxes.org has many
+# http://www.osboxes.org/ubuntu/
+# http://www.osboxes.org/centos/
+# 
+# Username: osboxes
+# Password: osboxes.org
 
 # Extract 7zipped VDI file, move to desired location
 # if your OS doesn't have a 7zip utility installed, you can download one from 7-zip.org
 # 7za e <archive file>, or on Mac OS X, you could double click on the .7z file if using Keka
+
+# Immediately following are instructions for the Virtualbox GUI. Command line instructions are at the end.
 
 # Launch VirtualBox, press New button
 
@@ -27,7 +37,7 @@
 
 # Boot into multi-user (non-graphical mode) by default
 
-ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 
+# ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 
 
 # If Ubuntu, then:
 # click on Ubuntu button and search for "term" to get the terminal
@@ -48,3 +58,26 @@ ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target
 # ifconfig | grep -A2 enp0 | grep 192
 
 # ssh from your host to your VM as user osboxes to the IP address you just grepped
+
+# Assuming you have downloaded a compressed osbox image into $VMDIR,
+# and then uncompressed it with a command such as the following:
+# p7zip -d Ubuntu_16.10_Yakkety-VB-64bit.7z
+
+export VM_DISK_DIR=$HOME/vm_disks
+export VDI="$VM_DISK_DIR/Ubuntu 16.10 Yakkety (64bit).vdi"
+export VMNAME=k_grok
+# determine your host's primary network adapter ... this may work
+export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
+
+# For more info about these instructions, see:
+# https://www.virtualbox.org/manual/ch08.html
+# http://www.howopensource.com/2011/06/how-to-use-virtualbox-in-terminal-commandline/
+# http://www.edwardstafford.com/2009/09/13/virtualbox-and-bridged-networking-on-a-headless-ubuntu-server-host/
+# http://serverfault.com/questions/128685/how-can-i-get-the-bridged-ip-address-of-a-virtualbox-vm-running-in-headless-mode
+
+vboxmanage createvm --name $VMNAME --register
+vboxmanage modifyvm $VMNAME --ostype Ubuntu
+vboxmanage modifyvm $VMNAME --memory 2000
+vboxmanage storagectl $VMNAME --name SATA --add sata --controller IntelAhci --bootable on
+vboxmanage storageattach $VMNAME --storagectl SATA --port 0 --device 0 --type hdd --medium "$VDI"
+vboxmanage modifyvm $VMNAME --nic1 bridged --nictype1 virtio --bridgeadapter1 $HOST_ADAPTER
