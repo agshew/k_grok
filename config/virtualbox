@@ -66,8 +66,15 @@
 export VM_DISK_DIR=$HOME/vm_disks
 export VDI="$VM_DISK_DIR/Ubuntu 16.10 Yakkety (64bit).vdi"
 export VMNAME=k_grok
-# determine your host's primary network adapter ... this may work
+# determine your host's primary network adapter ...
+# this may work on Linux
 export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
+# this may work on Mac OS X
+export HOST_ADAPTER=$(ifconfig | grep -B4 "status: active" | grep -B3 "inet " | head -1 | cut -f1 -d":")
+
+# On your host:
+# vboxmanage dhcpserver --enable
+# vboxmanage hostonlyif create
 
 # For more info about these instructions, see:
 # https://www.virtualbox.org/manual/ch08.html
@@ -76,8 +83,28 @@ export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
 # http://serverfault.com/questions/128685/how-can-i-get-the-bridged-ip-address-of-a-virtualbox-vm-running-in-headless-mode
 
 vboxmanage createvm --name $VMNAME --register
-vboxmanage modifyvm $VMNAME --ostype Ubuntu
+vboxmanage modifyvm $VMNAME --ostype Ubuntu_64
 vboxmanage modifyvm $VMNAME --memory 2000
 vboxmanage storagectl $VMNAME --name SATA --add sata --controller IntelAhci --bootable on
 vboxmanage storageattach $VMNAME --storagectl SATA --port 0 --device 0 --type hdd --medium "$VDI"
 vboxmanage modifyvm $VMNAME --nic1 bridged --nictype1 virtio --bridgeadapter1 $HOST_ADAPTER
+vboxmanage modifyvm $VMNAME --nic2 hostonly --nictype2 82540EM
+# send serial console to a log file
+vboxmanage modifyvm k_grok --uart1 0x3F8 4
+vboxmanage modifyvm k_grok --uartmode1 file /tmp/k_grok-serial.log
+# this slows booting down, so if desired you can disable with
+# vboxmanage modifyvm k_grok --uartmode1 disconnected
+
+# virtualbox --startvm k_grok
+# password osboxes.org
+# start a terminal (either right click or search using the first panel button)
+# sudo -i
+# password osboxes.org
+# apt update
+# apt upgrade
+# apt install openssh-server git
+#
+# ssh osboxes@$(arp -a | perl -ne '/\((.*)\) .*[0-9a-f] on vboxnet0 ifscope \[ethernet\]/ && print $1')
+# mkdir ~/src
+# cd ~/src
+# git clone https://github.com/agshew/k_grok.git

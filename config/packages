@@ -16,6 +16,9 @@
 
 # If Ubuntu
 
+# If osboxes.org based image
+# perl -pi -e 's/gb/us/' /etc/apt/sources.list
+
 # for newer asciinema
 # apt-add-repository ppa:zanchey/asciinema
 
@@ -47,7 +50,7 @@ gcc
 git
 git-email
 gitk
-git-lfs
+# git-lfs
 global
 isolinux
 lftp
