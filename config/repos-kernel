@@ -9,8 +9,8 @@ git remote add docs-next git://git.lwn.net/linux.git
 
 # shallow clones (to save space)
 # you can use the --unshallow option to get the full history later
-git fetch upstream v4.9 --depth=1
-git fetch stable v4.9.5 --depth=1
+# git fetch --depth 1 upstream tag v4.9
+git fetch --depth 1 stable tag v4.9.5
 
 # or if you want the full history
 # git fetch upstream
