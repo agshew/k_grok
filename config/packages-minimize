@@ -1,6 +1,18 @@
 ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default
 # remove unnecessary large or graphical packages
 # dpkg-query -W --showformat='${Installed-Size;10}\t${Package}\n' | sort -k1,1n
-apt --purge remove ubuntu-desktop unity cups* firefox libgl1-mesa-dri thunderbird libreoffice
+apt --purge remove \
+cups* \
+firefox \
+fonts-*
+gsfonts \
+libgl1-mesa-dri \
+libreoffice \
+linux-image-extra-*-generic \
+thunderbird \
+ttf-ubuntu-font-family \
+ubuntu-desktop \
+unity \
+xfonts* \
 # also, remove old kernels
 apt autoremove
