@@ -37,13 +37,16 @@
 # Mutt
 
 cat > ~/.muttrc <<MUTTRC
-set from="Your Name <${EMAIL_USERNAME}@gmail.com>"
-set imap_user = '${EMAIL_USERNAME}@gmail.com'
-set smtp_url = "smtp://${EMAIL_USERNAME}@smtp.gmail.com:587/"
+# if you are using a Google account directly
+#set from="Your Name <${EMAIL_USERNAME}@gmail.com>"
+#set imap_user = '${EMAIL_USERNAME}@gmail.com'
+#set smtp_url = "smtp://${EMAIL_USERNAME}@smtp.gmail.com:587/"
+
 # if you are using a domain provided by Google
-#set from="Your Name <${EMAIL_USERNAME}@yourdomain>"
-#set imap_user = '${EMAIL_USERNAME}@yourdomain'
-#set smtp_url = "smtps://${EMAIL_USERNAME}@yourdomain@smtp.gmail.com:465/"
+set from="Your Name <${EMAIL_USERNAME}@${DOMAIN}>"
+set imap_user = '${EMAIL_USERNAME}@${DOMAIN}'
+set smtp_url = "smtps://${EMAIL_USERNAME}@${DOMAIN}@smtp.gmail.com:465/"
+
 set imap_pass="${EMAIL_PASSWORD}"
 set smtp_pass="${EMAIL_PASSWORD}"
 set spoolfile = imaps://imap.gmail.com:993/INBOX
