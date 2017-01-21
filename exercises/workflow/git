@@ -1,0 +1,111 @@
+Example Git Workflow
+====================
+
+Update your repo to match the current HEAD of the subsystem repo you will be
+submitting to. In order to find the subsystem repo you want to work against,
+look at MAINTAINERS by hand or use the get_maintainer.pl script.
+
+cd ${LINUX_REPO}
+scripts/get_maintainer.pl -f ${FILE_YOU_WILL_EDIT} --scm
+
+The subsystem name is in all caps. The subsystem trees (i.e. repos) are listed
+below the email addresses. Pick the most relevant one.
+
+Add the subsystem repo as a new remote for your Linux repo, and fetch it.
+
+git remote add ${SUBSYS_SHORTNAME} ${URL}
+git fetch ${SUBSYS_SHORTNAME}
+
+For instance, if you are modifying Documentation/dev-tools/gdb-kernel-debugging.rst
+
+scripts/get_maintainer.pl -f Documentation/dev-tools/gdb-kernel-debugging.rst --scm
+Jonathan Corbet <corbet@lwn.net> (maintainer:DOCUMENTATION)
+"GitAuthor: Greg Kroah-Hartman" <gregkh@linuxfoundation.org> (authored:1/1=100%,added_lines:173/173=100%)
+linux-doc@vger.kernel.org (open list:DOCUMENTATION)
+linux-kernel@vger.kernel.org (open list)
+git git://git.lwn.net/linux.git docs-next
+git git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+
+The docs-next branch of the git.lwn.net/linux.git tree looks like the one
+we want (look at the MAINTAINERS file for more context).
+
+git remote add docs-next git://git.lwn.net/linux.git
+git fetch docs-next
+git checkout docs-next
+Start a new working branch, edit files, and save your changes
+
+git checkout -b brokenlinks
+
+Sanity check your changes
+
+git diff > temporary.patch
+
+ ./scripts/checkpatch.pl temporary.patch
+
+Fix the problems until it says your changes are okay.
+Commit your changes
+
+How to Write a Git Commit Message
+
+git commit -a
+subsystem: summary
+
+commit log
+
+Signed-off-by: Your Name <yourname@yourdomain>
+Format a patch
+
+class: git format-patch -v ${PATCH_VERSION} -1
+
+kernel: git format-patch -1
+
+This will create a patch for the last commit, printing out the filename as it does. Something like:
+
+v${PATCH_VERSION}-0001-subsystem-summary.patch
+
+class: At this point you can add the patch changelog between the '---' and diffstat, or you can wait until 'git send-email' and use the '--annotate' option.
+Collect Maintainer Addresses
+./scripts/get_maintainer.pl v${PATCH_VERSION}-0001-subsystem-summary.patch
+
+class: Put these addresses between the '---' and diffstat (just for assignments and not for real submissions). The addresses would really be put on the CC when actually submitting to the kernel list.
+Verify your patch
+Especially when you first get used to Linux kernel development, verify that your patch applies cleanly to the subsystem maintainer's repo. Maybe it's been updated.
+
+git checkout ${REMOTE_REPO_SHORTNAME} master
+git apply v${PATCH_VERSION}-0001-subsystem-summary.patch
+git diff
+git stash
+Get MESSAGE_ID if necessary
+class: Get MESSAGE_ID from your previous assignment's email header. In Gmail, click on the upper right down arrow, which has a drop down box. Click "Show original". Look for the Message-ID and copy the value between the angle brackets. See the in-reply-to option in the git-send-email man page.
+
+Message-ID: <MESSAGE_ID>
+Send your patch
+You may want to send it to yourself first, and try applying it to a fresh branch with git's am command, which applies a mailbox (not an email) of patches to your current branch.
+
+class: git send-email --annotate --to=ashewmak@ucsc.edu --to=carlosm@soe.ucsc.edu --in-reply-to=${MESSAGE_ID} v${PATCH_VERSION}-0001-subsystem-summary.patch
+
+class: Add patch changelog after --- and diffstat, if you haven't already. If you already did, then you can leave off the '--annotate'.
+
+...
+Signed-off-by: ...
+---
+CC: ${GET_MAINTAINER_ADDRESSES} # just for assignments, not in general
+
+${PATCH_CHANGELOG}
+
+diffstat
+
+...
+
+The command for the Linux kernel submission will look more like this:
+
+kernel: git send-email --annotate --to=linux-kernel@vger.kernel.org
+ --cc=${MAINTAINERS},trivial@kernel.org 0001-subsystem-summary.patch
+
+
+Resources
+=========
+
+https://git-scm.com/book
+
+http://www.geekgumbo.com/2011/08/04/git-a-simple-workflow-commands-usage/

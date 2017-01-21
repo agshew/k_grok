@@ -8,12 +8,12 @@
 cat > ~/.gitconfig <<GITCONFIG
 [user]
    name = Your Name
-   email = ${EMAIL_USERNAME}@gmail.com 
+   email = ${EMAIL_USERNAME}@${DOMAIN}
 
 [sendemail]
         smtpencryption = tls
         smtpserver = smtp.gmail.com
-        smtpuser = ${EMAIL_USERNAME}@gmail.com
+        smtpuser = ${EMAIL_USERNAME}@${DOMAIN}
         smtpserverport = 587
         smtpPass = "${EMAIL_PASSWORD}"
 GITCONFIG
