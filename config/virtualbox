@@ -85,9 +85,9 @@ export HOST_ADAPTER=$(ifconfig | grep -B4 "status: active" | grep -B3 "inet " | 
 vboxmanage createvm --name $VMNAME --register
 vboxmanage modifyvm $VMNAME --ostype Ubuntu_64
 vboxmanage modifyvm $VMNAME --memory 2000
-vboxmanage storagectl $VMNAME --name SATA --add sata --controller IntelAhci --bootable on
+vboxmanage storagectl $VMNAME --name SATA --add sata --portcount 2 --controller IntelAhci --bootable on
 vboxmanage storageattach $VMNAME --storagectl SATA --port 0 --device 0 --type hdd --medium "$VDI"
-vboxmanage modifyvm $VMNAME --nic1 bridged --nictype1 virtio --bridgeadapter1 $HOST_ADAPTER
+vboxmanage modifyvm $VMNAME --nic1 nat --nictype1 virtio
 vboxmanage modifyvm $VMNAME --nic2 hostonly --nictype2 82540EM
 # send serial console to a log file
 vboxmanage modifyvm k_grok --uart1 0x3F8 4

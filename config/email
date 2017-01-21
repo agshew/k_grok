@@ -24,13 +24,13 @@
 # outgoing mail server information, and copy it into the configuration files,
 # as shown in the next section.
 
-# If your gmail account uses two-step verification, then create an app password
-# at myaccount.google.com
+# If your gmail account uses two-step verification with Google prompt on your
+# phone, or create an app password at myaccount.google.com
 # Sign-in & security
+# Signing in to Google
+# 2-Step Verification: Google prompt
+# App passwords
 # ...
-
-# Alternatively, under "Sign-in & security" click "Connected apps & sites",
-# then "Allow less secure apps: ON".
 
 . ./variables
 
