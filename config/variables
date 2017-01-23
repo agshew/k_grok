@@ -2,4 +2,5 @@ HOSTNAME_PREFIX=cmps107
 DOMAIN=ucsc.edu
 EMAIL_PASSWORD=Change.meN0W!
 EMAIL_USERNAME=username
+FULL_NAME="Your Name"
 TIMEZONE=America/Los_Angeles

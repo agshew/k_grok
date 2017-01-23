@@ -7,7 +7,7 @@
 
 cat > ~/.gitconfig <<GITCONFIG
 [user]
-   name = Your Name
+   name = ${FULL_NAME}
    email = ${EMAIL_USERNAME}@${DOMAIN}
 
 [sendemail]
