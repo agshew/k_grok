@@ -9,4 +9,4 @@ hostname ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}
 echo ${HOSTNAME_PREFIX}-${EMAIL_USERNAME} > /etc/hostname
 
 # and ensure that the name resolves
-perl -pi -e 's/(127.0.0.1\s*localhost)/$1 ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}/' /etc/hosts
+perl -pi -e "s/(127.0.0.1\s*localhost)/\$1 ${HOSTNAME_PREFIX}-${EMAIL_USERNAME}/" /etc/hosts
