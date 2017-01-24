@@ -47,8 +47,7 @@ grep -Er  "ftp:/|http:/|gopher:/" . > /tmp/potential-links.txt
 
 # extract links and print them as html urls
 # regex is from urlview man page
-perl -ne 'm{((((http|https|ftp|gopher)|mailto):(//)?[^ <>"\t]*|(www|ftp)[0-9]?\.[-a-z0-9.]+)[^ .,;\t\n\r<">\):]?[^, <>"\t]*[^ .,;\t\n\r<">\):])} \
-	&& print "<a href=\"$1\">another link</a>\n"' \
+perl -ne 'm{((((http|https|ftp|gopher)|mailto):(//)?[^ <>"\t]*|(www|ftp)[0-9]?\.[-a-z0-9.]+)[^ .,;\t\n\r<">\):]?[^, <>"\t]*[^ .,;\t\n\r<">\):])} && print "<a href=\"$1\">another link</a>\n"' \
 	/tmp/potential-links.txt \
 	| sort \
 	| uniq \
@@ -68,3 +67,7 @@ linkchecker -r1 -v --check-extern /tmp/links-ascii.html > /tmp/linkcheck-ascii.t
 echo
 echo link status summary
 grep Result /tmp/linkcheck-ascii.txt | sort | uniq -c
+
+echo
+echo draw a random broken link to fix
+grep -B3 Error /tmp/linkcheck-ascii.txt | grep Real | shuf -n 1
