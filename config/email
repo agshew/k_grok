@@ -43,7 +43,7 @@ cat > ~/.muttrc <<MUTTRC
 #set smtp_url = "smtp://${EMAIL_USERNAME}@smtp.gmail.com:587/"
 
 # if you are using a domain provided by Google
-set from="Your Name <${EMAIL_USERNAME}@${DOMAIN}>"
+set from="${FULL_NAME} <${EMAIL_USERNAME}@${DOMAIN}>"
 set imap_user = '${EMAIL_USERNAME}@${DOMAIN}'
 set smtp_url = "smtps://${EMAIL_USERNAME}@${DOMAIN}@smtp.gmail.com:465/"
 
