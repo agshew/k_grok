@@ -70,4 +70,8 @@ grep Result /tmp/linkcheck-ascii.txt | sort | uniq -c
 
 echo
 echo draw a random broken link to fix
-grep -B3 Error /tmp/linkcheck-ascii.txt | grep Real | shuf -n 1
+broken=$(grep -B3 Error /tmp/linkcheck-ascii.txt | grep Real | shuf -n 1 | colrm 1 11)
+
+# if this grep doesn't spit something out, then it is probably because some characters were changed
+# either search by hand, or grab another broken link
+grep $broken /tmp/potential-links.txt
