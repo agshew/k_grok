@@ -41,9 +41,9 @@
 # These are the sorts of things you'd want to talk about in your patch,
 # justifying your choice of fix.
 
-KERNEL_SOURCE=/usr/src/linux-$(uname -r)
+KERNEL_SOURCE=~/src/linux
 cd ${KERNEL_SOURCE}
-grep -Er  "ftp:/|http:/|gopher:/" . > /tmp/potential-links.txt
+grep -Er  "ftp:/|http:/|https:/|gopher:/" . > /tmp/potential-links.txt
 
 # extract links and print them as html urls
 # regex is from urlview man page

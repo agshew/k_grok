@@ -2,12 +2,17 @@ Record all of your command-line work using:
 
 asciinema rec /tmp/sqrt-username
 
-Start screen and create multiple terminal buffers (i.e. console sessions) in
-screen via '<CTRL>+a c'. Switch between them via commands such as '<CTRL>+a "'
-(that the control and letter a keys pressed simultaneously, followed by a press
-of the double quote key).
+You can play it back using:
 
-Email the instructors and TA the resulting asciinema file.
+asciinema play -w 1 /tmp/sqrt-username
+
+After starting the recording, launc screen and create multiple terminal buffers
+(i.e. console sessions) in screen via '<CTRL>+a c'. Switch between them via
+commands such as '<CTRL>+a "' (that the control and letter a keys pressed
+simultaneously, followed by a press of the double quote key).
+
+Email the instructors and TA the resulting asciinema file
+with [HW 2] in the subject.
 
 Review a patch
 
@@ -16,34 +21,44 @@ Send an email to the instructor and TA reviewing the following:
 [PATCH] Optimize int_sqrt for small values for faster idle
 https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1063272.html
 
-In this review, please include suggestions for improving the patch name of
-person who last modified that code list of everywhere the code is used
-benchmarks previous code vs. new code benchmark in a kernel module, not
-userspace use perf trace events, and graph CDF and PDF, see
-k_grok/exercises/tracepoint-silly/
+The subject of this email should be:
+
+Re: [PATCH] Optimize int_sqrt for small values for faster idle
+
+In this review, please include
+ - suggestions for improving the patch
+ - name of 3 people who last modified the code (use git blame)
+ - a list of everywhere that code is used
+ - spot-checks or proofs of correctness
+ - benchmarks of previous code vs. new code
+   benchmark in a kernel module, not userspace
+   use perf trace events, and graph CDF and PDF,
+   see k_grok/exercises/tracepoint-silly/
 
 If jiffies aren't high enough resolution, then try ktime_get(), and use macros
 like ktime_sub(lhs, rhs) and ktime_to_ns(...) instead of standard math ops.
 
-Spot-check or prove correctness.
 
-Submit a patch
+Submit a patch series
 
-Reroll the patch you just reviewed, addressing the feedback of the kernel
-developers and your review. Send the rerolled patch to the instructor and TA.
-It should include the appropriate version in the subject's tag.
+Reroll (i.e. act as if you are the original author, revising it) the patch you
+just reviewed, addressing the feedback of the kernel developers and your
+review. Send the rerolled patch to the instructor and TA.  It should include
+the appropriate version in the subject's tag.
 
-Optimize teh function for a new random range of numbers.
+Optimize the function for a new random range of numbers.
 
 Go to https://www.random.org, change max to 1000000, and generate two random
-numbers see the prandom_u32() function in the kernel for generating numbers to
-test, and http://stackoverflow.com/questions/2509679/how-to-generate-a-random-number-from-within-a-range
+numbers. See the prandom_u32() function in the kernel for generating numbers to
+test, and
+http://stackoverflow.com/questions/2509679/how-to-generate-a-random-number-from-within-a-range
 for ranges of random numbers maybe get some ideas from
 http://stackoverflow.com/questions/1100090/looking-for-an-efficient-integer-square-root-algorithm-for-arm-thumb2
 
-Cite the source of anything you don't write patch changelog.
+Cite the source of anything you don't write youreself int the patch history
+(i.e. below the '---' mark)..
 
-Benchmarks as above (the benchmark kernel module patch should be a separate
+Benchmark as above (the benchmark kernel module patch should be a separate
 email in the series).
 
 Remember all of the other things the documentation says a patch should have.

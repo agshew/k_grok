@@ -27,8 +27,13 @@ cd linux-${KVERS}
 make mrproper
 
 # create a config based on currently loaded modules
-cp /boot/config-$(uname -r) .config
+
+# remove modules that your kernel won't have
+sudo rmmod vboxguest
+
 make olddefconfig
+# if you see errors, then run 'make olddefconfig' again
+
 make localmodconfig
 
 # compile the kernel in parallel
