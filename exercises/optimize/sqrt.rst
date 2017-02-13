@@ -1,20 +1,36 @@
-Record all of your command-line work using:
+Homework 2
+==========
 
-asciinema rec /tmp/sqrt-username
+This multi-part assignment will have separately graded sections.
 
-You can play it back using:
+ * Review a patch (10 points)
+ * Submit a patch series (10 points)
 
-asciinema play -w 1 /tmp/sqrt-username
+Use asciinema
+-------------
 
-After starting the recording, launc screen and create multiple terminal buffers
+Record all of your command-line work separately for each part of the homework:
+hw2-review, hw2-patch.
+
+Example: asciinema rec /tmp/hw2-review
+
+After starting the recording, launch screen and create multiple terminal buffers
 (i.e. console sessions) in screen via '<CTRL>+a c'. Switch between them via
 commands such as '<CTRL>+a "' (that the control and letter a keys pressed
 simultaneously, followed by a press of the double quote key).
 
-Email the instructors and TA the resulting asciinema file
-with [HW 2] in the subject.
+You can play a recording back with shortened inactive times.
 
-Review a patch
+Example: asciinema play -w 1 /tmp/hw2-review
+
+Upload asciinema files to Google Docs and include a link in an email to the
+instructors and TA. Not doing this will cost 2 points. Use subjects such as:
+
+ * [HW 2] Review asciinema
+ * [HW 2] Patch asciinema
+
+Review a patch (10 points)
+--------------------------
 
 Send an email to the instructor and TA reviewing the following:
 
@@ -25,12 +41,15 @@ The subject of this email should be:
 
 Re: [PATCH] Optimize int_sqrt for small values for faster idle
 
-In this review, please include
- - suggestions for improving the patch
- - name of 3 people who last modified the code (use git blame)
- - a list of everywhere that code is used
- - spot-checks or proofs of correctness
- - benchmarks of previous code vs. new code
+In this review, include:
+ * suggestions for improving the patch
+ * name 3 people who modified this file
+   apt install git-gui, and see git-gui blame
+   WARNING: You can't use a shallow clone, so either start with a full clone or
+   use 'git fetch --unshallow upstream'
+ * a list of everywhere the function is called
+ * spot-checks or proofs of correctness
+ * benchmarks of previous code vs. new code
    benchmark in a kernel module, not userspace
    use perf trace events, and graph CDF and PDF,
    see k_grok/exercises/tracepoint-silly/
@@ -40,6 +59,7 @@ like ktime_sub(lhs, rhs) and ktime_to_ns(...) instead of standard math ops.
 
 
 Submit a patch series
+---------------------
 
 Reroll (i.e. act as if you are the original author, revising it) the patch you
 just reviewed, addressing the feedback of the kernel developers and your
