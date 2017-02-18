@@ -46,7 +46,9 @@ In this review, include:
  * name 3 people who modified this file
    apt install git-gui, and see git-gui blame
    WARNING: You can't use a shallow clone, so either start with a full clone or
-   use 'git fetch --unshallow upstream'
+   convert a shallow clone to full with:
+   git fetch --unshallow upstream
+   git checkout upstream/master
  * a list of everywhere the function is called
  * spot-checks or proofs of correctness
  * benchmarks of previous code vs. new code
