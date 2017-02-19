@@ -1,4 +1,4 @@
-cd ~/linux
+cd ${KERNEL_SOURCE}
 
 # update your repo
 git pull

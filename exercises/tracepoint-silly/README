@@ -10,17 +10,25 @@ As root:
 
 insmod sillymod-event.ko
 
-cd /sys/kernel/debug/tracing
+echo 1 > /sys/kernel/debug/tracing/events/silly/me_silly/enable
 
-echo 1 > events/silly/me_silly/enable
-
-
-To add a load during the test, you
-can do something like:
+To add a load during the test, you can add a load with perf's bench command.
 
 perf bench sched messaging -l 10000
+NOTE: To use perf with a custom kernel, you need to rebuild perf
+      (see k_grok/exercises/build/perf).
 
-cat trace
+Or, create a load by doing just about anything of interest, such as building a
+kernel.
+
+View the trace by examining /sys/kernel/debug/tracing/trace.
+
+cat /sys/kernel/debug/tracing/trace
+
+In the case of the silly module, you see the standard tracing information.
+That info is followed by a counter of how many times silly_thread_func() has
+been called, and then the amount of time it took to increment the counter
+and call printk (time is in jiffies).
 
 # tracer: nop
 #
@@ -45,13 +53,18 @@ cat trace
     silly-thread-20261 [000] .... 320764.493467: me_silly: 99, 10
 ...
 
+Format the trace data into a file easily parsed. The following
+Perl one-liner simply extracts the count and time.
 
 perl -ne '/me_silly: (\d+), (\d+)/ && print "$1, $2\n"' trace >> /tmp/silly-before.dat
 
+If the R statistical package is not installed:
 apt-get install r-base r-cran-ggplot2 imagemagick
 
+Then create graphs with the included scripts:
 ./silly-plots.R silly-before.dat
 
+The imagemagick display command allows you to flip through the graphs.
 display *png
 
 After modifying the code, removing the module, and tracing again, you can plot

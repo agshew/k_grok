@@ -70,8 +70,28 @@ In this review, include:
    use perf trace events, and graph CDF and PDF,
    see k_grok/exercises/tracepoint-silly/
 
-If jiffies aren't high enough resolution, then try ktime_get(), and use macros
-like ktime_sub(lhs, rhs) and ktime_to_ns(...) instead of standard math ops.
+   Since int_sqrt takes much less time than printk, jiffies aren't high enough
+   resolution.  Include the linux/time.h header and use ktime_get(), and macros
+   like ktime_sub(lhs, rhs) and ktime_to_ns(...) instead of standard math ops::
+
+   ...
+   #include <linux/time.h>
+   ...
+   static void silly_thread_func(void)
+   {
+       static unsigned long count;
+       ktime_t x, y;
+       s64 z;
+       ...
+       x = ktime_get();
+       ...
+       // operations to be measured
+       // WARNING: Take out the printk! Only measure the optimzed sqrt function.
+       ...
+       y = ktime_get();
+       z = ktime_to_ns(ktime_sub(y, x));
+       trace_me_silly ( (unsigned long)z, count);
+   }
 
 
 Submit a patch series
@@ -82,7 +102,16 @@ just reviewed, addressing the feedback of the kernel developers and your
 review. Send the rerolled patch to the instructor and TA.  It should include
 the appropriate version in the subject's tag.
 
-Optimize the function for a new random range of numbers.
+Add a new optimized version of the int_sqrt function for a new random range of
+numbers.
+
+Add a prototype declaration after the one for int_sqrt in include/linux/kernel.h
+Add the implementation after int_sqrt in lib/int_sqrt.c::
+
+        unsigned long int_sqrt_optimized(unsigned long x){
+        ...
+        }
+        EXPORT_SYMBOL(int_sqrt_optimized);
 
 Go to https://www.random.org, change max to 1000000, and generate two random
 numbers. See the prandom_u32() function in the kernel for generating numbers to
@@ -90,6 +119,32 @@ test, and
 http://stackoverflow.com/questions/2509679/how-to-generate-a-random-number-from-within-a-range
 for ranges of random numbers maybe get some ideas from
 http://stackoverflow.com/questions/1100090/looking-for-an-efficient-integer-square-root-algorithm-for-arm-thumb2
+
+For example::
+
+        #include <linux/kernel.h>
+        #include <linux/random.h>
+        ...
+        static void silly_thread_func(void)
+        {
+            ...
+            static unsigned long rnd, min, max, num_bins, num_rand, bin_size;
+            ...
+            min = ???; // from random.org
+            max = ???; // from random.org
+            num_bins = max + 1;
+            num_rand = ULONG_MAX + 1;
+            bin_size = num_rand / num_bins;
+            defect = num_rand % num_bins;
+            ...
+            do {
+                rnd = prandom_u32();
+            }
+            // This is carefully written not to overflow
+            while (num_rand - defect <= (unsigned long)rnd);
+            ...
+            // Use rnd here
+        }
 
 Cite the source of anything you don't write youreself int the patch history
 (i.e. below the '---' mark)..

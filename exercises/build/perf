@@ -1,0 +1,14 @@
+cd ${KERNEL_SOURCE}
+
+make perf-tarxz-src-pkg
+
+mv perf-${KERNEL_VERSION}.tar.xz ~/
+tar xvfJ perf-${KERNEL_VERSION}.tar.xz
+cd perf-${KERNEL_VERSION}/tools/perf
+
+make
+
+# try it out
+./perf list
+
+./perf bench --help
