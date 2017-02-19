@@ -110,7 +110,9 @@ review. Send the rerolled patch to the instructor and TA.  It should include
 the appropriate version in the subject's tag.
 
 Add a new optimized version of the int_sqrt function for a new random range of
-numbers.
+numbers. Regarding the random range and conclusions about bit length, you can
+deduce that a number from, say, 65536 to 4294967295 is at least 8 bits
+and less than 32 bits.
 
 Add a prototype declaration after the one for int_sqrt in include/linux/kernel.h
 Add the implementation after int_sqrt in lib/int_sqrt.c::
@@ -156,7 +158,8 @@ For example::
 Cite the source of anything you don't write youreself int the patch history
 (i.e. below the '---' mark)..
 
-Benchmark as above (the benchmark kernel module patch should be a separate
-email in the series).
+Benchmark as above. The benchmark kernel module source should be included as
+separate emails in the series. Add the silly dir under ${KERNEL_SOURCE}/tools,
+and then you can generate a patch.
 
 Remember all of the other things the documentation says a patch should have.
