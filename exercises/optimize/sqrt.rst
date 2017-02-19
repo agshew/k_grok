@@ -42,15 +42,29 @@ The subject of this email should be:
 Re: [PATCH] Optimize int_sqrt for small values for faster idle
 
 In this review, include:
+
  * suggestions for improving the patch
+
  * name 3 people who modified this file
    apt install git-gui, and see git-gui blame
-   WARNING: You can't use a shallow clone, so either start with a full clone or
-   convert a shallow clone to full with:
-   git fetch --unshallow upstream
-   git checkout upstream/master
+
+   * WARNING: You can't use a shallow clone, so either start with a full clone or
+     convert a shallow clone to full with:
+     git fetch --unshallow upstream
+     git checkout upstream/master
+
+   * NOTE: If you execute 'git gui blame' and see an error message that refers to
+     there being no DISPLAY environment variable being set, then that means that
+     you need to enable X forwarding when you ssh into your VM.
+     ssh -Y ${HOSTNAME}
+     Only use the '-Y' argument when you ssh to something secure like your VM.
+     Otherwise add something like 'ForwardX11Timeout 1D' to ~/.ssh/config and use
+     the  '-X' argument.
+
  * a list of everywhere the function is called
+
  * spot-checks or proofs of correctness
+
  * benchmarks of previous code vs. new code
    benchmark in a kernel module, not userspace
    use perf trace events, and graph CDF and PDF,
