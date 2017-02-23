@@ -55,7 +55,8 @@ In this review, include:
 
    * NOTE: If you execute 'git gui blame' and see an error message that refers to
      there being no DISPLAY environment variable being set, then that means that
-     you need to enable X forwarding when you ssh into your VM.
+     you need install X or enable X forwarding when you ssh into your VM.
+     `X for Mac OS X<www.xquartz.org>` and `X for Windows<x.cygwin.com>`
      ssh -Y ${HOSTNAME}
      Only use the '-Y' argument when you ssh to something secure like your VM.
      Otherwise add something like 'ForwardX11Timeout 1D' to ~/.ssh/config and use
