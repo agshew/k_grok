@@ -67,9 +67,9 @@ In this review, include:
  * spot-checks or proofs of correctness
 
    In other words, call the function with a few values and compare it to what a
-   calculator or other trusted source gives you. Think of good corner cases for
-   unsigned integers, such as 0 and the max unsigned int of that size, along
-   with a few normal values.
+   calculator or other trusted source gives you. Do this with a kernel module.
+   Think of good corner cases for unsigned integers, such as 0 and the max
+   unsigned int of that size, along with a few normal values.
 
    You could write a mathematical proof, if that's something you like to do.
 
